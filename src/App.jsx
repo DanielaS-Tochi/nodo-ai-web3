@@ -1,19 +1,25 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Container } from '@mui/material';
-import AppRoutes from './AppRoutes'; // Archivo que maneja las rutas
-import { AuthProvider } from './context/AuthContext'; // Nuevo contexto para autenticación
+import { Container } from '@mui/material';
+import AppRoutes from './AppRoutes'; // Rutas
+import { AuthProvider } from './context/AuthContext'; // Contexto de autenticación
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
     <AuthProvider>
-      <AppBar position="sticky">
-        <Toolbar>
-          <Typography variant="h6">nodo: DApp AI + Web3</Typography>
-        </Toolbar>
-      </AppBar>
-      <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+      <Navbar />
+      <Container
+        maxWidth={false}
+        disableGutters
+        sx={{
+          padding: 0,
+          marginTop: '56px', // Espacio para que no cubra el contenido
+        }}
+      >
         <AppRoutes />
       </Container>
+      <Footer />
     </AuthProvider>
   );
 };
