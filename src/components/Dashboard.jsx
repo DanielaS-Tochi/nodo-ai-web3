@@ -8,29 +8,29 @@ const Dashboard = () => {
 
   // Función para obtener los datos de criptomonedas
   const fetchCryptoData = async () => {
-    try {
-      const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
-        params: {
-          vs_currency: 'usd',
-          ids: 'bitcoin,ethereum,litecoin',
-        },
-      });
-      setCryptoData(response.data);
-    } catch (error) {
-      console.error('Error fetching crypto data:', error);
-    }
-  };
-
-  // Cargar los datos al montar el componente
-  useEffect(() => {
-    fetchCryptoData();
-    setLoading(false);
-  }, []);
-
-  if (loading) {
-    return <CircularProgress />;
-  }
-
+        try {
+          const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
+            params: {
+              vs_currency: 'usd',
+              ids: 'bitcoin,ethereum,litecoin,cardano,dogecoin,polkadot', // Agregamos más criptomonedas
+            },
+          });
+          setCryptoData(response.data);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching crypto data:', error);
+          setLoading(false);
+        }
+      };
+    
+      useEffect(() => {
+        fetchCryptoData();
+      }, []);
+    
+      if (loading) {
+        return <CircularProgress />;
+      }
+    
   return (
     <Paper style={{ padding: '20px', backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
       <Typography variant="h4" gutterBottom style={{ color: '#333', textAlign: 'center' }}>
@@ -80,3 +80,67 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { Grid, Card, CardContent, Typography, CircularProgress, CardMedia } from '@mui/material';
+
+// const Dashboard = () => {
+//   const [cryptoData, setCryptoData] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   const fetchCryptoData = async () => {
+//     try {
+//       const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
+//         params: {
+//           vs_currency: 'usd',
+//           ids: 'bitcoin,ethereum,litecoin,cardano,dogecoin,polkadot', // Agregamos más criptomonedas
+//         },
+//       });
+//       setCryptoData(response.data);
+//       setLoading(false);
+//     } catch (error) {
+//       console.error('Error fetching crypto data:', error);
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchCryptoData();
+//   }, []);
+
+//   if (loading) {
+//     return <CircularProgress />;
+//   }
+
+//   return (
+//     <div>
+//       <Typography variant="h5" gutterBottom>
+//         Criptomonedas Populares
+//       </Typography>
+//       <Grid container spacing={2}>
+//         {cryptoData.map((crypto) => (
+//           <Grid item xs={12} sm={6} md={4} key={crypto.id}>
+//             <Card>
+//               <CardMedia
+//                 component="img"
+//                 height="140"
+//                 image={crypto.image}
+//                 alt={`${crypto.name} logo`}
+//               />
+//               <CardContent>
+//                 <Typography variant="h6">{crypto.name}</Typography>
+//                 <Typography variant="body1">Precio: ${crypto.current_price}</Typography>
+//                 <Typography variant="body2" color="textSecondary">
+//                   24h Cambio: {crypto.price_change_percentage_24h}%
+//                 </Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+//         ))}
+//       </Grid>
+//     </div>
+//   );
+// };
+
+// export default Dashboard;
