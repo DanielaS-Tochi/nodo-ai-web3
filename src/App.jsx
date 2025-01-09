@@ -1,26 +1,44 @@
-import React from 'react';
-import { Container } from '@mui/material';
-import AppRoutes from './AppRoutes'; // Rutas
-import { AuthProvider } from './context/AuthContext'; // Contexto de autenticación
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Container, CircularProgress, Box } from '@mui/material';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import AppRoutes from './AppRoutes';
+
+// Loading component for Suspense fallback
+const Loading = () => (
+  <Box
+    display="flex"
+    justifyContent="center"
+    alignItems="center"
+    minHeight="100vh"
+  >
+    <CircularProgress />
+  </Box>
+);
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Navbar />
-      <Container
-        maxWidth={false}
-        disableGutters
-        sx={{
-          padding: 0,
-          marginTop: '56px', // Espacio para que no cubra el contenido
-        }}
-      >
-        <AppRoutes />
-      </Container>
-      <Footer />
-    </AuthProvider>
+    <ErrorBoundary>
+      <Router>
+        <Navbar />
+        <Container
+          maxWidth={false}
+          disableGutters
+          sx={{
+            padding: 0,
+            marginTop: '64px', // Height of the AppBar
+            minHeight: 'calc(100vh - 64px)', // Full height minus AppBar
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <Suspense fallback={<Loading />}>
+            <AppRoutes />
+          </Suspense>
+        </Container>
+      </Router>
+    </ErrorBoundary>
   );
 };
 
