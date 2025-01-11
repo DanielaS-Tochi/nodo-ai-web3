@@ -129,7 +129,7 @@ const Footer = () => {
         {/* Copyright */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="body2" color="text.secondary">
-            {new Date().getFullYear()}© Nodo AI Web3 by Daniela Silvana Tochi. Todos los derechos reservados.
+          ©{new Date().getFullYear()} | Nodo AI Web3 by Daniela Silvana Tochi | Todos los derechos reservados.
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Hecho con ❤️ en Argentina
