@@ -31,7 +31,7 @@ Una aplicación descentralizada (DApp) que combina inteligencia artificial y tec
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/nodo-ai-web3.git
+   git clone https://github.com/danielas-tochi/nodo-ai-web3.git
    cd nodo-ai-web3
    ```
 
