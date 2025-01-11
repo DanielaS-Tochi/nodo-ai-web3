@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundaryClass extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
@@ -22,35 +23,58 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          minHeight="100vh"
-          padding={3}
-          textAlign="center"
-        >
-          <Typography variant="h4" component="h1" gutterBottom>
-            ¡Ups! Algo salió mal
-          </Typography>
-          <Typography variant="body1" color="text.secondary" paragraph>
-            Ha ocurrido un error inesperado. Por favor, intenta recargar la página.
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => window.location.reload()}
-          >
-            Recargar página
-          </Button>
-        </Box>
-      );
+      return <ErrorFallback onReset={() => {
+        this.setState({ hasError: false });
+        window.location.reload();
+      }} />;
     }
 
     return this.props.children;
   }
 }
+
+const ErrorFallback = ({ onReset }) => {
+  const navigate = useNavigate();
+
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      padding={3}
+      textAlign="center"
+    >
+      <Typography variant="h4" component="h1" gutterBottom>
+        ¡Ups! Algo salió mal
+      </Typography>
+      <Typography variant="body1" color="text.secondary" paragraph>
+        Ha ocurrido un error inesperado. Puedes intentar:
+      </Typography>
+      <Stack direction="row" spacing={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onReset}
+        >
+          Recargar página
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => navigate('/')}
+        >
+          Ir al inicio
+        </Button>
+      </Stack>
+    </Box>
+  );
+};
+
+// Wrapper component to provide router context
+const ErrorBoundary = (props) => {
+  return <ErrorBoundaryClass {...props} />;
+};
 
 export default ErrorBoundary;

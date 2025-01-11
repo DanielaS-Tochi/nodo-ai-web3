@@ -33,7 +33,7 @@ const App = () => {
   } = useAccessibility();
 
   // Create a theme instance with accessibility preferences
-  const theme = createTheme({
+  const theme = React.useMemo(() => createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
@@ -48,26 +48,18 @@ const App = () => {
       },
       success: {
         main: '#4caf50',
-        light: '#66bb6a',
+        light: '#81c784',
         dark: '#388e3c',
       },
-      custom: {
-        green: {
-          main: '#4caf50',
-          light: '#66bb6a',
-          dark: '#388e3c',
-          contrastText: '#ffffff',
-        },
+      background: {
+        default: darkMode ? '#303030' : '#f5f5f5',
+        paper: darkMode ? '#424242' : '#ffffff',
+      },
+      text: {
+        primary: darkMode ? '#ffffff' : '#212121',
+        secondary: darkMode ? '#b0b0b0' : '#757575',
       },
       ...(highContrast && {
-        primary: {
-          main: '#000000',
-          contrastText: '#ffffff',
-        },
-        secondary: {
-          main: '#ffffff',
-          contrastText: '#000000',
-        },
         background: {
           default: darkMode ? '#000000' : '#ffffff',
           paper: darkMode ? '#121212' : '#ffffff',
@@ -139,19 +131,20 @@ const App = () => {
     shape: {
       borderRadius: 8,
     },
-  });
+  }), [darkMode, highContrast, fontSize, prefersReducedMotion]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ErrorBoundary>
-        <Router>
+        <Router future={{ v7_relativeSplatPath: true }}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               minHeight: '100vh',
               bgcolor: 'background.default',
+              color: 'text.primary',
             }}
           >
             <Navbar />
@@ -161,9 +154,9 @@ const App = () => {
               sx={{
                 flexGrow: 1,
                 pt: { xs: 2, sm: 3 },
-                pb: { xs: 8, sm: 10 }, // Space for AccessibilityBar
+                pb: { xs: 8, sm: 10 },
                 px: { xs: 2, sm: 3 },
-                mt: '64px', // Space for Navbar
+                mt: '64px',
               }}
             >
               <Suspense fallback={<Loading />}>

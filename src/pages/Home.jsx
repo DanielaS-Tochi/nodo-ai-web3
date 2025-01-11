@@ -17,7 +17,7 @@ const Home = () => {
       </Typography>
       <Button
         variant="contained"
-        color="secondary"
+        color="success"
         style={{ marginBottom: '20px' }}
         onClick={() => navigate('/login')} // Redirigir a la ruta de login
       >

@@ -52,78 +52,124 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="fixed" color="primary">
+    <AppBar 
+      position="fixed" 
+      sx={{ 
+        background: theme => theme.palette.mode === 'dark' 
+          ? 'linear-gradient(45deg, #424242 30%, #303030 90%)'
+          : 'linear-gradient(45deg, #f5f5f5 30%, #e0e0e0 90%)',
+        boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .1)',
+        backdropFilter: 'blur(8px)',
+      }}
+    >
       <Toolbar>
-        <Typography
-          variant="h6"
-          component="div"
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleMenuOpen}
           sx={{
-            flexGrow: 1,
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            cursor: 'pointer'
+            mr: 2,
+            '&:hover': {
+              bgcolor: 'rgba(255, 255, 255, 0.1)',
+            },
           }}
-          onClick={() => navigate('/')}
         >
-          nodo: DApp AI + Web3
+          <MenuIcon />
+        </IconButton>
+
+        <Typography 
+          variant="h6" 
+          component="div" 
+          sx={{ 
+            flexGrow: 1,
+            fontWeight: 600,
+            background: theme => theme.palette.mode === 'dark'
+              ? 'linear-gradient(45deg, #fff 30%, #e0e0e0 90%)'
+              : 'linear-gradient(45deg, #424242 30%, #212121 90%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          Nodo AI + Web3
         </Typography>
 
-        {isAuthenticated ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar
-              sx={{
-                bgcolor: 'secondary.main',
-                width: 32,
-                height: 32,
-                fontSize: '0.875rem'
-              }}
-            >
-              {user?.email?.[0]?.toUpperCase() || 'U'}
-            </Avatar>
-            <Typography variant="body2" sx={{ mr: 2 }}>
-              {user?.email}
-            </Typography>
-            <Button
-              color="inherit"
-              onClick={handleLogout}
-              sx={{ mr: 1 }}
-            >
-              Cerrar Sesión
-            </Button>
-            <IconButton
-              color="inherit"
-              edge="end"
-              aria-label="menu"
-              onClick={handleMenuOpen}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-              <MenuItem onClick={() => {
-                handleMenuClose();
-                navigate('/dashboard');
-              }}>
-                Dashboard
-              </MenuItem>
-              <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
-            </Menu>
-          </Box>
-        ) : (
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button color="inherit" onClick={handleLogin}>
-              Iniciar Sesión
-            </Button>
-            <Button color="inherit" onClick={handleRegister}>
-              Registrarse
-            </Button>
-          </Box>
-        )}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {isAuthenticated ? (
+            <>
+              <Avatar 
+                alt={user?.name || 'User'} 
+                src={user?.avatar}
+                sx={{ 
+                  width: 40, 
+                  height: 40,
+                  border: theme => `2px solid ${theme.palette.primary.main}`,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    transition: 'transform 0.2s',
+                  },
+                }}
+                onClick={handleMenuOpen}
+              />
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                PaperProps={{
+                  sx: {
+                    mt: 1,
+                    '& .MuiMenuItem-root': {
+                      px: 2,
+                      py: 1,
+                      borderRadius: 1,
+                      '&:hover': {
+                        bgcolor: 'action.hover',
+                      },
+                    },
+                  },
+                }}
+              >
+                <MenuItem onClick={() => { handleMenuClose(); navigate('/dashboard'); }}>
+                  Dashboard
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <>
+              <Button 
+                color="inherit" 
+                onClick={handleLogin}
+                sx={{
+                  borderRadius: 2,
+                  px: 2,
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                }}
+              >
+                Iniciar sesión
+              </Button>
+              <Button 
+                variant="outlined" 
+                color="inherit"
+                onClick={handleRegister}
+                sx={{
+                  borderRadius: 2,
+                  px: 2,
+                  borderColor: 'currentColor',
+                  '&:hover': {
+                    borderColor: 'currentColor',
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                }}
+              >
+                Registrarse
+              </Button>
+            </>
+          )}
+        </Box>
       </Toolbar>
     </AppBar>
   );
